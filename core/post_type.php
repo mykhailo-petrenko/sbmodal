@@ -1,8 +1,26 @@
 <?php
 class SBModalPostTypes {
 	
+	private $_templates = null;
+	private $_nonce_action = 'sb_testimonials_meta_box';
+	private $_nonce_name = 'sb_testimonials_meta_box_nonce';
+
 	public function register() {
 		add_action('init', array($this, '_modal'));
+
+		// @TODO: Add filter here
+		// @TODO: set/get method
+		$this->_templates = array(
+			'simple' => __('Simple', 'sbmodal'),
+			'middle' => __('Middle', 'sbmodal'),
+			'full' => __('Full', 'sbmodal'),
+		);
+
+		$this->_widths = array(
+			'@modal-lg' => __('Large', 'sbmodal'),
+			'@modal-md' => __('Middle', 'sbmodal'),
+			'@modal-sm' => __('Small', 'sbmodal'),
+		);
 	}
 	
 	public function _modal() {
@@ -41,7 +59,128 @@ class SBModalPostTypes {
 		);
 		register_post_type('sb_modals', $args);
 		
-//		add_action( 'add_meta_boxes', array($this, 'sb_modals_add_meta_box') );
-//		add_action( 'save_post', array($this, 'sb_modals_save_meta_box_data') );
+		add_action( 'add_meta_boxes', array($this, 'sb_modals_add_meta_box') );
+		add_action( 'save_post', array($this, 'sb_modals_save_meta_box_data') );
+	}
+	
+	function sb_modals_add_meta_box() {
+		$screens = array('sb_modals');
+
+		foreach ($screens as $screen) {
+			add_meta_box(
+				'sb_modals_options',
+				__('Options', 'sbuilder'),
+				array($this, 'sb_modals_meta_box_callback'),
+				$screen,
+				'normal'
+			);
+		}
+	}
+
+	function sb_modals_meta_box_callback() {
+		global $post;
+		wp_nonce_field( $this->_nonce_action, $this->_nonce_name );
+
+		$template = get_post_meta( $post->ID, 'sb_modals__template', true );
+		$call_selector = get_post_meta( $post->ID, 'sb_modals__call_selector', true );
+		$width = get_post_meta( $post->ID, 'sb_modals__width', true );
+		$max_width = get_post_meta( $post->ID, 'sb_modals__max_width', true );
+		$class = get_post_meta( $post->ID, 'sb_modals__class', true );
+		$id = get_post_meta( $post->ID, 'sb_modals__id', true );
+		
+?>
+		<p>
+			<label for="sb_modals__template"><?php echo __('Template', 'sbmodal'); ?></label>
+			<select name="sb_modals__template" id="sb_modals__template">
+			<?php foreach( $this->_templates as $value => $label):
+					$_checked = ( strcmp($value, $template)===0 ) ? 'selected="selected"' : '' ;
+			?>
+				<option value="<?php echo $value; ?>" <?php echo $_checked; ?>><?php echo $label; ?></option>
+			<?php endforeach; ?>
+			</select>
+		</p>
+
+		<p>
+			<label for="sb_modals__call_selector"><?php echo __('Call Selector', 'sbmodal'); ?></label>
+			<input type="text" name="sb_modals__call_selector" id="sb_modals__call_selector" value="<?php echo esc_attr($call_selector); ?>" placeholder="[href='#myModal']" />
+		</p>
+
+		<p>
+			<label for="sb_modals__width"><?php echo __('Width', 'sbmodal'); ?></label>
+			<select name="sb_modals__width" id="sb_modals__width">
+			<?php foreach( $this->_widths as $value => $label):
+					$_checked = ( strcmp($value, $width)===0 ) ? 'selected="selected"' : '' ;
+			?>
+				<option value="<?php echo $value; ?>" <?php echo $_checked; ?>><?php echo $label; ?></option>
+			<?php endforeach; ?>
+			</select>
+		</p>
+
+		<p>
+			<label for="sb_modals__max_width"><?php echo __('Max Width', 'sbmodal'); ?></label>
+			<input type="text" name="sb_modals__max_width" id="sb_modals__max_width" value="<?php echo esc_attr($max_width); ?>" placeholder="300" size="5" /><em>px</em>
+		</p>
+
+		<p>
+			<label for="sb_modals__class"><?php echo __('Class', 'sbmodal'); ?></label>
+			<input type="text" name="sb_modals__class" id="sb_modals__class" value="<?php echo esc_attr($class); ?>" placeholder="my-modal-classname" size="50" />
+		</p>
+
+		<p>
+			<label for="sb_modals__id"><?php echo __('ID', 'sbmodal'); ?></label>
+			<input type="text" name="sb_modals__id" id="sb_modals__id" value="<?php echo esc_attr($id); ?>" placeholder="MyModalID" size="50" />
+		</p>
+<?php
+	}
+
+	function sb_modals_save_meta_box_data( $post_id  ) {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+		
+		# Check if our nonce is set.
+		if ( ! isset( $_POST[ $this->_nonce_name ] ) ) {
+			return;
+		}
+		
+		# Verify that the nonce is valid.
+		if ( ! wp_verify_nonce( $_POST[ $this->_nonce_name ], $this->_nonce_action ) ) {
+			return;
+		}
+
+		# Check the user's permissions.
+		if ( isset( $_POST['post_type'] ) && 'page' == $_POST['post_type'] ) {
+
+			if ( ! current_user_can( 'edit_page', $post_id ) ) {
+				return;
+			}
+
+		} else {
+
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
+				return;
+			}
+		}
+
+		# Lets save the data (without validation :o( )
+		$fields = array(
+			'sb_modals__template',
+			'sb_modals__call_selector',
+			'sb_modals__width',
+			'sb_modals__max_width',
+			'sb_modals__class',
+			'sb_modals__id',
+		);
+
+		foreach ( $fields as $field ) {
+			// Make sure that it is set.
+			if ( isset($_POST[$field]) ) {
+				// Sanitize user input.
+				$val = sanitize_text_field( $_POST[$field] );
+
+				// Update the meta field in the database.
+				update_post_meta( $post_id, $field, $val );
+			}
+		}
 	}
 }
