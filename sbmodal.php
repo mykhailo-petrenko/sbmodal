@@ -8,6 +8,7 @@ Author: Seven Bytes
 Author URI: http://seven-bytes.com/
 License: MIT
 */
+defined('ABSPATH') or die("No script kiddies please!");
 
 define('SBMODAL_PATH', plugin_dir_path(__FILE__));
 define('SBMODAL_URL', plugin_dir_url(__FILE__));

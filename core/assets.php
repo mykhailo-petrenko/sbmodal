@@ -1,4 +1,6 @@
 <?php
+defined('ABSPATH') or die("No script kiddies please!");
+
 class SBModalAssets {
 	public function __construct() {
 		add_action('wp_enqueue_scripts', array($this, 'register_frontend_assets'));

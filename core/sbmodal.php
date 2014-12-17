@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') or die("No script kiddies please!");
 
 class SBModal {
 	private static $_instance = null;

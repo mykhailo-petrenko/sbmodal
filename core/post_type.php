@@ -1,4 +1,6 @@
 <?php
+defined('ABSPATH') or die("No script kiddies please!");
+
 class SBModalPostTypes {
 	
 	private $_templates = null;
