@@ -7,6 +7,7 @@ Version: 1.0
 Author: Seven Bytes
 Author URI: http://seven-bytes.com/
 License: MIT
+License URI: http://opensource.org/licenses/MIT
 */
 defined('ABSPATH') or die("No script kiddies please!");
 
