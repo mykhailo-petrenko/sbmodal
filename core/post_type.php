@@ -7,23 +7,37 @@ class SBModalPostTypes {
 
 	public function register() {
 		add_action('init', array($this, '_modal'));
-
-		// @TODO: Add filter here
-		// @TODO: set/get method
+	}
+	
+	private function _register_option_values() {
 		$this->_templates = array(
 			'simple' => __('Simple', 'sbmodal'),
 			'middle' => __('Middle', 'sbmodal'),
 			'full' => __('Full', 'sbmodal'),
 		);
+		
+		$templates = apply_filters('sbmodal_templates', $this->_templates);
+		
+		if ( !empty( $templates ) ) {
+			$this->_templates = $templates;
+		}
 
 		$this->_widths = array(
-			'@modal-lg' => __('Large', 'sbmodal'),
-			'@modal-md' => __('Middle', 'sbmodal'),
-			'@modal-sm' => __('Small', 'sbmodal'),
+			'modal-lg' => __('Large', 'sbmodal'),
+			'modal-md' => __('Middle', 'sbmodal'),
+			'modal-sm' => __('Small', 'sbmodal'),
 		);
+		
+		$widths = apply_filters('sbmodal_width_classes', $this->_widths);
+		
+		if ( !empty( $widths ) ) {
+			$this->_widths = $widths;
+		}
 	}
 	
 	public function _modal() {
+		$this->_register_option_values();
+		
 		global $wp_rewrite;
 		$labels = array(
 			'name' => _x('Modals', 'post type general name', 'sbuilder'),
@@ -54,8 +68,7 @@ class SBModalPostTypes {
 			),
 			'capability_type' => 'page',
 			'hierarchical' => false,
-			'menu_position' => 26,
-			'supports' => array('title', 'editor', 'author', 'thumbnail', 'excerpt', 'page-attributes',),
+			'supports' => array('title', 'editor', 'page-attributes',),
 		);
 		register_post_type('sb_modals', $args);
 		
@@ -72,7 +85,7 @@ class SBModalPostTypes {
 				__('Options', 'sbuilder'),
 				array($this, 'sb_modals_meta_box_callback'),
 				$screen,
-				'normal'
+				'side'
 			);
 		}
 	}
@@ -123,12 +136,12 @@ class SBModalPostTypes {
 
 		<p>
 			<label for="sb_modals__class"><?php echo __('Class', 'sbmodal'); ?></label>
-			<input type="text" name="sb_modals__class" id="sb_modals__class" value="<?php echo esc_attr($class); ?>" placeholder="my-modal-classname" size="50" />
+			<input type="text" name="sb_modals__class" id="sb_modals__class" value="<?php echo esc_attr($class); ?>" placeholder="my-modal-classname" size="30" />
 		</p>
 
 		<p>
 			<label for="sb_modals__id"><?php echo __('ID', 'sbmodal'); ?></label>
-			<input type="text" name="sb_modals__id" id="sb_modals__id" value="<?php echo esc_attr($id); ?>" placeholder="MyModalID" size="50" />
+			<input type="text" name="sb_modals__id" id="sb_modals__id" value="<?php echo esc_attr($id); ?>" placeholder="MyModalID" size="30" />
 		</p>
 <?php
 	}

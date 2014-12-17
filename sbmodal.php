@@ -3,7 +3,7 @@
 Plugin Name: SBModal
 Plugin URI: http://seven-bytes.com/plugins/sbmodal/
 Description: Bootatrap3 Modal manager
-Version: 0.1a
+Version: 1.0
 Author: Seven Bytes
 Author URI: http://seven-bytes.com/
 License: MIT
