@@ -1,17 +1,16 @@
 === SBModal ===
 Contributors: sevenbytes
-Donate link: http://seven-bytes.com/
-Tags: modal, bootstrap, pop ups
-Requires at least: 3.0.1
-Tested up to: 4.0.1
+Tags: modal, bootstrap, pop ups, bootstrap popup
+Requires at least: 4.0.1
+Tested up to: 4.1
 Stable tag: 1.0
 Plugin Name: SBModal
 Plugin URI: http://seven-bytes.com/plugins/sbmodal
-Description: Using Bootstrap Modals in WordPress
+Description: Ease using Bootstrap Modals in WordPress
 License: MIT
 License URI: http://opensource.org/licenses/MIT
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Provides ease Bootstrap Modals management. A lot of options and ease of extensibility.
 
 == Description ==
 
