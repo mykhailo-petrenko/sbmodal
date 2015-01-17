@@ -1,6 +1,6 @@
 {
   "name": "SBModal",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Ease using Bootstrap Modals in WordPress",
   "devDependencies": {
 	"grunt": "~0.4.5",
