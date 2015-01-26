@@ -36,6 +36,8 @@ class SBModalFrontView {
 			
 			$class = get_post_meta($modal_id, 'sb_modals__class', true);
 			$id = get_post_meta($modal_id, 'sb_modals__id', true);
+
+			$modal_footer = get_post_meta($modal_id, 'sb_modals__footer', true);
 			
 			if ( empty($id) ) {
 				$id = uniqid('sbmodal_');
@@ -51,6 +53,7 @@ class SBModalFrontView {
 				'id' => $id,
 				'modal_title' => $modal_title,
 				'modal_content' => $modal_content,
+				'modal_footer' => $modal_footer,
 			) );
 			
 			$script_buff .= $this->generate_javascript( $call_selector, $id );

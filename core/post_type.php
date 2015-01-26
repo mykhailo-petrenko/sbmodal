@@ -85,14 +85,24 @@ class SBModalPostTypes {
 			add_meta_box(
 				'sb_modals_options',
 				__('Options', 'sbuilder'),
-				array($this, 'sb_modals_meta_box_callback'),
+				array($this, 'sb_modals_options_meta_box_callback'),
 				$screen,
 				'side'
+			);
+
+			add_meta_box(
+				'sb_modals_footer',
+				__('Modal Footer', 'sbuilder'),
+				array($this, 'sb_modals_footer_meta_box_callback'),
+				$screen
 			);
 		}
 	}
 
-	function sb_modals_meta_box_callback() {
+	/**
+	 * Options MetaBox Callback
+	 */
+	public function sb_modals_options_meta_box_callback() {
 		global $post;
 		wp_nonce_field( $this->_nonce_action, $this->_nonce_name );
 
@@ -148,6 +158,38 @@ class SBModalPostTypes {
 <?php
 	}
 
+	/**
+	 * Modal Footer Metabox Callback
+	 */
+	function sb_modals_footer_meta_box_callback() {
+		global $post;
+		wp_nonce_field( $this->_nonce_action, $this->_nonce_name );
+
+		$sb_modals__footer = get_post_meta( $post->ID, 'sb_modals__footer', true );
+
+		wp_editor( $sb_modals__footer, 'sb_modals__footer', array(
+			'wpautop'       => true,
+			'media_buttons' => false,
+			'textarea_name' => 'sb_modals__footer',
+			'textarea_rows' => 10,
+			'teeny'         => true,
+			'tinymce'       => false,
+		) );
+?>
+<p>
+	<em>Footer displayed only for template "Full". If you using default options.</em>
+</p>
+<p>
+	<label for="">Close button example:</label>
+	<pre><?php echo htmlentities( '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' ); ?></pre>
+</p>
+<p>
+	<label for="">Primary Button example:</label>
+	<pre><?php echo htmlentities( '<button type="button" class="btn btn-primary">Save changes</button>' ); ?></pre>
+</p>
+<?php
+	}
+
 	function sb_modals_save_meta_box_data( $post_id  ) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
@@ -197,5 +239,11 @@ class SBModalPostTypes {
 				update_post_meta( $post_id, $field, $val );
 			}
 		}
+
+		if ( isset($_POST['sb_modals__footer'])) {
+			update_post_meta( $post_id, 'sb_modals__footer', $_POST['sb_modals__footer'] );
+		}
 	}
+
+
 }
