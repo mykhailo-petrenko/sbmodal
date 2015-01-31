@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: SBModal
-Plugin URI: http://seven-bytes.com/plugins/sbmodal/
-Description: Bootstrap Modals manager
+Plugin URI: http://sbmodal.seven-bytes.com/
+Description: Ease usage of Bootstrap Modals in WordPress
 Version: 1.0
 Author: Seven Bytes
 Author URI: http://seven-bytes.com/
