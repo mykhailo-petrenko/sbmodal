@@ -12,9 +12,9 @@ class SBModalAssets {
 	
 	public function register_frontend_assets() {
 		wp_enqueue_script('jquery');
-		wp_enqueue_script('bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js', array('jquery'), '3.3.1', true);
+		wp_enqueue_script('bootstrap', $this->getAssetsUrl() . 'js/bootstrap.min.js', array('jquery'), '3.3.2', true);
 		
-		wp_enqueue_style('bootstrap',  '//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css', null, '3.3.1');
+		wp_enqueue_style('bootstrap',  $this->getAssetsUrl() . 'css/bootstrap.min.css', null, '3.3.2');
 		wp_enqueue_style('sbmodal_front',  $this->getAssetsUrl() . 'css/front.css');
 	}
 }
