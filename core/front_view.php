@@ -44,7 +44,7 @@ class SBModalFrontView {
 			}
 			
 			$modal_title = get_the_title();
-			$modal_content = wpautop( get_the_content() );
+			$modal_content = apply_filters('the_content', get_the_content());
 			
 			$this->render( $template, array(
 				'width' => $width,
