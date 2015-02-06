@@ -41,7 +41,9 @@ module.exports = function (grunt) {
 							'director.php',
 							'index.php',
 							'readme.txt',
-							'sbmodal.php'
+							'sbmodal.php',
+							'screenshot-1.png',
+							'screenshot-2.png',
 						],
 						dest: 'sbmodal/'
 					}
