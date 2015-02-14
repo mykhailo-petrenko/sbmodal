@@ -16,5 +16,7 @@ class SBModalAssets {
 		
 		wp_enqueue_style('bootstrap',  $this->getAssetsUrl() . 'css/bootstrap.min.css', null, '3.3.2');
 		wp_enqueue_style('sbmodal_front',  $this->getAssetsUrl() . 'css/front.css');
+		
+		wp_register_style('bootstrap.modal',  $this->getAssetsUrl() . 'css/bootstrap.modal.css', null, '3.3.2');
 	}
 }

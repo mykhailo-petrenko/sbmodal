@@ -1,28 +1,26 @@
 module.exports = function (grunt) {
 	grunt.initConfig({
-//		less: {
-//			development: {
-//				options: {
-//					compress: true,
-//					yuicompress: true,
-//					optimization: 2
-//				},
-//				files: {
-//					// target.css file: source.less file
-//					"assets/css/admin_style.css": "assets/less/admin_style.less",
-//					"assets/css/front.css": "assets/less/front.less",
-//				}
-//			}
-//		},
-//		watch: {
-//			styles: {
-//				files: ['assets/less/**/*.less', ],
-//				tasks: ['less'],
-//				options: {
-//					nospawn: true
-//				}
-//			}
-//		}
+		less: {
+			development: {
+				options: {
+					compress: true,
+					yuicompress: true,
+					optimization: 2
+				},
+				files: {
+					"assets/css/bootstrap.modal.css": "assets/less/bootstrap.modal.less"
+				}
+			}
+		},
+		watch: {
+			styles: {
+				files: ['assets/less/*.less', ],
+				tasks: ['less'],
+				options: {
+					nospawn: true
+				}
+			}
+		},
 		compress: {
 			main: {
 				options: {
