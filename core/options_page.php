@@ -24,7 +24,6 @@ class SBModalOptionsPage {
 	<h2>SBModal Settings</h2>
 
 	<form method="post" action="options.php">
-		<?php // wp_nonce_field( 'update-options' ); ?>
 		<?php settings_fields( 'sbmodal-settings-group' ); ?>
 
 		<table class="form-table">
@@ -54,7 +53,6 @@ class SBModalOptionsPage {
 		</table>
 		
 		<input type="hidden" name="action" value="update" />
-		<!-- <input type="hidden" name="page_options" value="sbmodal_bootstrapjs" /> -->
 
 		<p class="submit">
 			<input type="submit" class="button-primary" value="<?php _e('Save Changes', 'sbmodal'); ?>" />
