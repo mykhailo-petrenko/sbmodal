@@ -42,6 +42,7 @@ module.exports = function (grunt) {
 							'sbmodal.php',
 							'screenshot-1.png',
 							'screenshot-2.png',
+							'screenshot-3.png',
 						],
 						dest: 'sbmodal/'
 					}
