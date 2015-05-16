@@ -71,6 +71,11 @@ You may use all features of standard WP WYSIWYG editor for creating Modal conten
 
 == Changelog ==
 
+= 1.3.1 =
+* Usage Helper on editor page - "How To Use" metabox.
+* Add Modal HTML ID Generation
+* Set 'Styles ONLY for Modal' as default value for 'Enqueue Boots trap CSS Style' option
+
 = 1.3 =
 * Move all parts of  Bootstrap Modal html markup into template files.
 
