@@ -57,7 +57,7 @@ class SBModalFrontView {
 			) );
 
 			if ( !empty( $id ) ) {
-				$script_buff .= $this->generate_javascript( '[href=#' . $id . ']', $id );
+				$script_buff .= $this->generate_javascript( '[href=\'#' . $id . '\']', $id );
 			}
 
 			if ( !empty($call_selector) ) {
