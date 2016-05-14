@@ -1,17 +1,62 @@
 {
-  "name": "SBModal",
-  "version": "1.3.3",
-  "description": "Ease using Bootstrap Modals in WordPress",
-  "devDependencies": {
-	"grunt": "~0.4.5",
-	"grunt-contrib-less": "~0.11.0",
-	"grunt-contrib-watch": "~0.6.1",
-	"grunt-contrib-compress": "~0.13.0"
-  },
-  "main": "Gruntfile.js",
+  "name": "sbmodal",
+  "version": "1.3.5",
+  "description": "",
+  "main": "sbmodal.php",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "sevenbytes",
-  "license": "MIT"
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sevenbytes/sbmodal.git"
+  },
+  "author": "Seven Bytes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sevenbytes/sbmodal/issues"
+  },
+  "homepage": "http://sbmodal.seven-bytes.com/",
+  "devDependencies": {
+    "bootstrap": "",
+    "browser-sync": "^2.10.0",
+    "browserify": "^8.0.3",
+    "del": "^1.1.1",
+    "fancybox ": "",
+    "gulp": "^3.8.11",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-cached": "^1.0.1",
+    "gulp-changed": "^1.1.0",
+    "gulp-connect-php": "0.0.5",
+    "gulp-consolidate": "^0.1.2",
+    "gulp-debug": "^2.0.0",
+    "gulp-filesize": "0.0.6",
+    "gulp-iconfont": "^1.0.0",
+    "gulp-image-resize": "^0.6.0",
+    "gulp-imagemin": "^2.4.0",
+    "gulp-jshint": "^1.9.0",
+    "gulp-livereload": "^3.2.0",
+    "gulp-minify-css": "^0.3.11",
+    "gulp-notify": "^2.1.0",
+    "gulp-plumber": "",
+    "gulp-react": "^2.0.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-sass": "^1.3.3",
+    "gulp-sourcemaps": "^1.3.0",
+    "gulp-uglify": "^1.1.0",
+    "gulp-util": "^3.0.2",
+    "gulp-watch": "^4.1.1",
+    "gulp.spritesmith": "^3.1.0",
+    "jquery": "",
+    "jshint-stylish": "^1.0.0",
+    "lodash": "^3.3.1",
+    "merge-stream": "^1.0.0",
+    "node-neat": "",
+    "pretty-hrtime": "^1.0.1",
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.0.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^2.2.1"
+  },
+  "dependencies": {}
 }
