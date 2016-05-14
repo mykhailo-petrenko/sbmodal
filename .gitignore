@@ -2,3 +2,5 @@
 nbproject/
 node_modules/
 npm-debug.log
+app/assets/stylesheets/
+app/assets/javascripts/
