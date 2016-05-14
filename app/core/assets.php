@@ -14,20 +14,20 @@ class SBModalAssets {
 		wp_enqueue_script('jquery');
 
 		if ( SBModalOptions::get('sbmodal_bootstrapjs') ) {
-			wp_enqueue_script('bootstrap', $this->getAssetsUrl() . 'js/bootstrap.min.js', array('jquery'), '3.3.2', true);
+			wp_enqueue_script('bootstrap', $this->getAssetsUrl() . 'vendors/javascripts/bootstrap.min.js', array('jquery'), '3.3.6', true);
 		}
 		
 		switch ( SBModalOptions::get('sbmodal_bootstrapcss') ) {
 			case 'full':
-				wp_enqueue_style('bootstrap',  $this->getAssetsUrl() . 'css/bootstrap.min.css', null, '3.3.2');
+				wp_enqueue_style('bootstrap',  $this->getAssetsUrl() . 'stylesheets/bootstrap.css', null, '3.3.6');
 				break;
 			case 'modal':
-				wp_enqueue_style('bootstrap.modal',  $this->getAssetsUrl() . 'css/bootstrap.modal.css', null, '3.3.2');
+				wp_enqueue_style('bootstrap.modal',  $this->getAssetsUrl() . 'stylesheets/bootstrap.modal.css', null, '3.3.6');
 				break;
 			case 'none':
 				break;
 		}
 
-		wp_enqueue_style('sbmodal_front',  $this->getAssetsUrl() . 'css/front.css');
+		wp_enqueue_style('sbmodal_front',  $this->getAssetsUrl() . 'stylesheets/front.css');
 	}
 }

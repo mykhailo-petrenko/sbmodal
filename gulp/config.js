@@ -16,7 +16,7 @@ module.exports = {
 		}
 	},
 	markup: {
-		src: "./app/**/*.{php,html}",
+		src: "./app/**/*.{php,html}"
 	},
 	browserify: {
 		bundleConfigs: [
