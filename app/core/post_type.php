@@ -35,6 +35,11 @@ class SBModalPostTypes {
 		if ( !empty( $widths ) ) {
 			$this->_widths = $widths;
 		}
+
+    $this->_show_custom_url = array(
+      0 => __('No', 'sbmodal'),
+      1 => __('Yes', 'sbmodal'),
+    );
 	}
 	
 	public function _modal() {
@@ -127,6 +132,8 @@ class SBModalPostTypes {
 		$max_width = get_post_meta( $post->ID, 'sb_modals__max_width', true );
 		$class = get_post_meta( $post->ID, 'sb_modals__class', true );
 		$id = get_post_meta( $post->ID, 'sb_modals__id', true );
+    $show_custom_url = get_post_meta( $post->ID, 'sb_modals__show_custom_url', true);
+    $custom_url = get_post_meta( $post->ID, 'sb_modals__custom_url', true);
 ?>
 		<p>
 			<label for="sb_modals__id"><?php echo __('HTML ID', 'sbmodal'); ?></label>
@@ -169,6 +176,18 @@ class SBModalPostTypes {
 			<label for="sb_modals__call_selector"><?php echo __('Custom jQuery Selector', 'sbmodal'); ?></label>
 			<input type="text" name="sb_modals__call_selector" id="sb_modals__call_selector" value="<?php echo esc_attr($call_selector); ?>" placeholder="[href='#myModal']" size="30" />
 		</p>
+
+    <p>
+      <label for="sb_modals__show_custom_url"><?php _e('Custom url', 'sbmodal'); ?></label>
+      <select name="sb_modals__show_custom_url" id="sb_modals__show_custom_url">
+        <?php foreach( $this->_show_custom_url as $value=>$label):
+          $selected = ($value==$show_custom_url) ? 'selected="selected"' : '';
+        ?>
+          <option value="<?php echo $value; ?>" <?php echo $selected; ?>><?php echo $label; ?></option>
+        <?php endforeach; ?>
+      </select>
+      <input type="text" name="sb_modals__custom_url" id="sb_modals__custom_url" value="<?php echo esc_attr($custom_url); ?>" placeholder="">
+    </p>
 <?php
 	}
 
@@ -267,6 +286,8 @@ class SBModalPostTypes {
 			'sb_modals__width',
 			'sb_modals__max_width',
 			'sb_modals__class',
+      'sb_modals__show_custom_url',
+      'sb_modals__custom_url',
 		);
 
 		foreach ( $fields as $field ) {
