@@ -61,6 +61,7 @@ You may use all features of standard WP WYSIWYG editor for creating Modal conten
 *	Max Width - You could provide INT value to limit width of Modal (px).
 *	Class - custom class.
 *	ID - custom ID.
+* Custom url - Custom url for each modal. For example: http://yourdomain.com/#modal-custom-url
 
 = Filters =
 
@@ -70,6 +71,10 @@ You may use all features of standard WP WYSIWYG editor for creating Modal conten
 
 
 == Changelog ==
+
+= 1.3.5 =
+* Custom url for each modal. Example: http://yourdomain.com/#modal-custom-url
+* Update Bootstrap to version 3.3.6
 
 = 1.3.4 =
 * Fixed Issue "unrecognized expression [href=#thanksModal] #1" https://github.com/sevenbytes/sbmodal/issues/1
