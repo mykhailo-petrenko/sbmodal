@@ -4,6 +4,7 @@ defined('ABSPATH') or die("No script kiddies please!");
 class SBModal {
 	private static $_instance = null;
 	private $_post_types = null;
+	private $_post_meta = null;
 	
 	private function __construct() {}
 	private function __clone() {}
@@ -26,6 +27,14 @@ class SBModal {
 		
 		return $this->_post_types;
 	}
+
+	public function post_meta() {
+		if ( is_null( $this->_post_meta ) ) {
+			$this->_post_meta = new SBModalPostMeta();
+		}
+		
+		return $this->_post_meta;
+	}
 	
 	public function getTemplatePath() {
 		return SBMODAL_PATH . 'templates/';
@@ -45,6 +54,7 @@ class SBModalAdmin extends SBModal {
 	
 	public function init() {
 		$this->post_types()->register();
+		$this->post_meta()->register();
 		$this->_options_page();
 	}
 
@@ -59,6 +69,7 @@ class SBModalFront extends SBModal {
 	
 	public function init() {
 		$this->post_types()->register();
+		$this->post_meta()->register();
 		$this->_assets();
 		$this->_view();
 	}
