@@ -36,10 +36,21 @@ class SBModalPostTypes {
 			$this->_widths = $widths;
 		}
 
-    $this->_show_custom_url = array(
-      0 => __('No', 'sbmodal'),
-      1 => __('Yes', 'sbmodal'),
-    );
+		$this->_show_custom_url = array(
+			0 => __('No', 'sbmodal'),
+			1 => __('Yes', 'sbmodal'),
+		);
+
+		$this->_load_conditions = array(
+			'' => __('Everywhere', 'sbmodal'),
+			'custom' => __('to selected Page or Post', 'sbmodal')
+		);
+		
+		$load_conditions = apply_filters('sbmodal_load_conditions', $this->_load_conditions);
+		
+		if ( !empty( $load_conditions ) ) {
+			$this->_load_conditions = $load_conditions;
+		}
 	}
 	
 	public function _modal() {
@@ -47,20 +58,20 @@ class SBModalPostTypes {
 		
 		global $wp_rewrite;
 		$labels = array(
-			'name' => _x('Modals', 'post type general name', 'sbuilder'),
-			'singular_name' => _x('Modal', 'post type singular name', 'sbuilder'),
-			'menu_name' => _x('Modals', 'admin menu', 'sbuilder'),
-			'name_admin_bar' => _x('Modal', 'add new on admin bar', 'sbuilder'),
-			'add_new' => _x('Add New', 'book', 'sbuilder'),
-			'add_new_item' => __('Add New Modal', 'sbuilder'),
-			'new_item' => __('New Modal', 'sbuilder'),
-			'edit_item' => __('Edit Modal', 'sbuilder'),
-			'view_item' => __('View Modal', 'sbuilder'),
-			'all_items' => __('All Modal', 'sbuilder'),
-			'search_items' => __('Search Modals', 'sbuilder'),
-			'parent_item_colon' => __('Parent Modals:', 'sbuilder'),
-			'not_found' => __('No Modals found.', 'sbuilder'),
-			'not_found_in_trash' => __('No Modals found in Trash.', 'sbuilder')
+			'name' => _x('Modals', 'post type general name', 'sbmodal'),
+			'singular_name' => _x('Modal', 'post type singular name', 'sbmodal'),
+			'menu_name' => _x('Modals', 'admin menu', 'sbmodal'),
+			'name_admin_bar' => _x('Modal', 'add new on admin bar', 'sbmodal'),
+			'add_new' => _x('Add New', 'book', 'sbmodal'),
+			'add_new_item' => __('Add New Modal', 'sbmodal'),
+			'new_item' => __('New Modal', 'sbmodal'),
+			'edit_item' => __('Edit Modal', 'sbmodal'),
+			'view_item' => __('View Modal', 'sbmodal'),
+			'all_items' => __('All Modal', 'sbmodal'),
+			'search_items' => __('Search Modals', 'sbmodal'),
+			'parent_item_colon' => __('Parent Modals:', 'sbmodal'),
+			'not_found' => __('No Modals found.', 'sbmodal'),
+			'not_found_in_trash' => __('No Modals found in Trash.', 'sbmodal')
 		);
 
 		$args = array(
@@ -95,22 +106,30 @@ class SBModalPostTypes {
 		foreach ( $screens as $screen ) {
 			add_meta_box(
 				'sb_modals_options',
-				__( 'Options', 'sbuilder' ),
+				__( 'Options', 'sbmodal' ),
 				array( $this, 'sb_modals_options_meta_box_callback' ),
 				$screen,
 				'side'
 			);
 
 			add_meta_box(
+				'sb_modals_load_conditions',
+				__( 'Load Contitions', 'sbmodal' ),
+				array( $this, 'sb_modals_load_conditions_meta_box_callback' ),
+				$screen,
+				'side'
+			);
+
+			add_meta_box(
 				'sb_modals_footer',
-				__( 'Modal Footer', 'sbuilder' ),
+				__( 'Modal Footer', 'sbmodal' ),
 				array( $this, 'sb_modals_footer_meta_box_callback' ),
 				$screen
 			);
 
 			add_meta_box(
 				'sb_modal_helper',
-				__( 'How to use', 'sbuilder' ),
+				__( 'How to use', 'sbmodal' ),
 				array( $this, 'sb_modals_helper_meta_box_callback' ),
 				$screen,
 				'normal',
@@ -132,8 +151,8 @@ class SBModalPostTypes {
 		$max_width = get_post_meta( $post->ID, 'sb_modals__max_width', true );
 		$class = get_post_meta( $post->ID, 'sb_modals__class', true );
 		$id = get_post_meta( $post->ID, 'sb_modals__id', true );
-    $show_custom_url = get_post_meta( $post->ID, 'sb_modals__show_custom_url', true);
-    $custom_url = get_post_meta( $post->ID, 'sb_modals__custom_url', true);
+		$show_custom_url = get_post_meta( $post->ID, 'sb_modals__show_custom_url', true);
+		$custom_url = get_post_meta( $post->ID, 'sb_modals__custom_url', true);
 ?>
 		<p>
 			<label for="sb_modals__id"><?php echo __('HTML ID', 'sbmodal'); ?></label>
@@ -177,17 +196,40 @@ class SBModalPostTypes {
 			<input type="text" name="sb_modals__call_selector" id="sb_modals__call_selector" value="<?php echo esc_attr($call_selector); ?>" placeholder="[href='#myModal']" size="30" />
 		</p>
 
-    <p>
-      <label for="sb_modals__show_custom_url"><?php _e('Custom url', 'sbmodal'); ?></label>
-      <select name="sb_modals__show_custom_url" id="sb_modals__show_custom_url">
-        <?php foreach( $this->_show_custom_url as $value=>$label):
-          $selected = ($value==$show_custom_url) ? 'selected="selected"' : '';
-        ?>
-          <option value="<?php echo $value; ?>" <?php echo $selected; ?>><?php echo $label; ?></option>
-        <?php endforeach; ?>
-      </select>
-      <input type="text" name="sb_modals__custom_url" id="sb_modals__custom_url" value="<?php echo esc_attr($custom_url); ?>" placeholder="">
-    </p>
+		<p>
+			<label for="sb_modals__show_custom_url"><?php _e('Custom url', 'sbmodal'); ?></label>
+			<select name="sb_modals__show_custom_url" id="sb_modals__show_custom_url">
+			<?php foreach( $this->_show_custom_url as $value=>$label):
+				$selected = ($value==$show_custom_url) ? 'selected="selected"' : '';
+			?>
+				<option value="<?php echo $value; ?>" <?php echo $selected; ?>><?php echo $label; ?></option>
+			<?php endforeach; ?>
+			</select>
+			<input type="text" name="sb_modals__custom_url" id="sb_modals__custom_url" value="<?php echo esc_attr($custom_url); ?>" placeholder="">
+		</p>
+<?php
+	}
+
+	/**
+	 * Load COnditions MetaBox Callback
+	 */
+	function sb_modals_load_conditions_meta_box_callback() {
+		global $post;
+		wp_nonce_field( $this->_nonce_action, $this->_nonce_name );
+
+		$load_condition = get_post_meta( $post->ID, 'sb_modals__load_condition', true );
+?>
+		<p>
+			<label for="sb_modals__load_condition"><?php echo __('Include modal code', 'sbmodal'); ?></label>
+			<select name="sb_modals__load_condition" id="sb_modals__load_condition">
+			<?php foreach( $this->_load_conditions as $value => $label):
+					$_checked = ( strcmp($value, $load_condition)===0 ) ? 'selected="selected"' : '' ;
+			?>
+				<option value="<?php echo $value; ?>" <?php echo $_checked; ?>><?php echo $label; ?></option>
+			<?php endforeach; ?>
+			</select>
+		</p>
+		<p class="description">If <b>"<?php echo $this->_load_conditions['custom']; ?>"</b> select the modal on the corresponding Page/Post edit page.</p>
 <?php
 	}
 
@@ -286,8 +328,9 @@ class SBModalPostTypes {
 			'sb_modals__width',
 			'sb_modals__max_width',
 			'sb_modals__class',
-      'sb_modals__show_custom_url',
-      'sb_modals__custom_url',
+			'sb_modals__show_custom_url',
+			'sb_modals__custom_url',
+			'sb_modals__load_condition',
 		);
 
 		foreach ( $fields as $field ) {
