@@ -4,6 +4,7 @@ defined('ABSPATH') or die("No script kiddies please!");
 require_once (SBMODAL_PATH . 'core/sbmodal.php');
 require_once (SBMODAL_PATH . 'core/options.php');
 require_once (SBMODAL_PATH . 'core/post_type.php');
+require_once (SBMODAL_PATH . 'core/post_meta.php');
 require_once (SBMODAL_PATH . 'core/assets.php');
 
 if ( is_admin() ) {
