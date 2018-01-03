@@ -8,77 +8,57 @@ class SBModalFrontView {
 	}
 
 	public function print_modals() {
+		$script_buff = '';
+
+		# Load modals visible in global scope
 		$query_args = array(
 			'post_type' => 'sb_modals',
+			'meta_key' => 'sb_modals__load_condition',
+			'meta_value' => 'custom',
+			'meta_compare' => '!=',
 			'posts_per_page' => 0,
 			'nopaging' => true,
 		);
-		
 		$the_query = new WP_Query( $query_args );
 		
-		if ( !$the_query->have_posts() ) {
-			return;
-		}
-		
-		$html_buff = '';
-		$script_buff = '';
-		
-		while ( $the_query->have_posts() ) {
-			$the_query->the_post();
-			$modal_id = get_the_ID();
+		if ( $the_query->have_posts() ) {
 
-      $id = get_post_meta($modal_id, 'sb_modals__id', true);
-
-      if ( empty($id) ) {
-        $id = uniqid('sbmodal_');
-      }
-
-      $call_selector = get_post_meta($modal_id, 'sb_modals__call_selector', true);
-      $call_selector = str_replace('"', '\\"', $call_selector);
-
-      $show_custom_url = get_post_meta($modal_id, 'sb_modals__show_custom_url', true);
-      $custom_url = get_post_meta($modal_id, 'sb_modals__custom_url', true);
-
-      if ( !$show_custom_url ) {
-        $custom_url = false;
-      }
-
-      $script_buff .= $this->generate_javascript('[href=\'#' . $id . '\']', $id);
-
-      if ( !empty($call_selector) ) {
-        $script_buff .= $this->generate_javascript( $call_selector, $id );
-      }
-
-      if ( !empty( $custom_url ) ) {
-        $script_buff .= $this->generate_javascript_for_custom_url( $custom_url, $id );
-      }
-
-      $template = get_post_meta($modal_id, 'sb_modals__template', true);
-			
-			$width = get_post_meta($modal_id, 'sb_modals__width', true);
-			$max_width = get_post_meta($modal_id, 'sb_modals__max_width', true);
-			
-			$class = get_post_meta($modal_id, 'sb_modals__class', true);
-
-			$modal_footer = get_post_meta($modal_id, 'sb_modals__footer', true);
-			
-			$modal_title = get_the_title();
-			$modal_content = apply_filters('the_content', get_the_content());
-			
-			$this->render( $template, array(
-				'width' => $width,
-				'max_width' => $max_width,
-				'class' => $class,
-				'id' => $id,
-				'modal_title' => $modal_title,
-				'modal_content' => $modal_content,
-				'modal_footer' => $modal_footer,
-			) );
+			while ( $the_query->have_posts() ) {
+				$the_query->the_post();
+				
+				$script_buff .= $this->appendModal();
+			}
 
 		}
 		
 		wp_reset_query();
 		wp_reset_postdata();
+
+		# Load modals with custom visibility
+		$current_modals = get_post_meta(get_the_ID(), SBModalPostMeta::$CUSTOM_MODALS_FIELD, true);
+
+		if(!empty($current_modals)) {
+			$query_args = array(
+				'post_type' => 'sb_modals',
+				'post__in' => $current_modals,
+				'posts_per_page' => 0,
+				'nopaging' => true,
+			);
+			$the_query = new WP_Query( $query_args );
+
+			if ( $the_query->have_posts() ) {
+
+				while ( $the_query->have_posts() ) {
+					$the_query->the_post();
+
+					$script_buff .= $this->appendModal();
+				}
+
+			}
+
+			wp_reset_query();
+			wp_reset_postdata();
+		}
 ?>
 <script type="text/javascript">
 (function($) {
@@ -90,7 +70,62 @@ class SBModalFrontView {
 </script>
 <?php
 	}
-	
+
+	private function appendModal() {
+		$script_buff = '';
+
+		$modal_id = get_the_ID();
+		$id = get_post_meta($modal_id, 'sb_modals__id', true);
+
+		if ( empty($id) ) {
+			$id = uniqid('sbmodal_');
+		}
+
+		$call_selector = get_post_meta($modal_id, 'sb_modals__call_selector', true);
+		$call_selector = str_replace('"', '\\"', $call_selector);
+
+		$show_custom_url = get_post_meta($modal_id, 'sb_modals__show_custom_url', true);
+		$custom_url = get_post_meta($modal_id, 'sb_modals__custom_url', true);
+
+		if ( !$show_custom_url ) {
+			$custom_url = false;
+		}
+
+		$script_buff .= $this->generate_javascript('[href=\'#' . $id . '\']', $id);
+
+		if ( !empty($call_selector) ) {
+			$script_buff .= $this->generate_javascript( $call_selector, $id );
+		}
+
+		if ( !empty( $custom_url ) ) {
+			$script_buff .= $this->generate_javascript_for_custom_url( $custom_url, $id );
+		}
+
+		$template = get_post_meta($modal_id, 'sb_modals__template', true);
+		
+		$width = get_post_meta($modal_id, 'sb_modals__width', true);
+		$max_width = get_post_meta($modal_id, 'sb_modals__max_width', true);
+		
+		$class = get_post_meta($modal_id, 'sb_modals__class', true);
+
+		$modal_footer = get_post_meta($modal_id, 'sb_modals__footer', true);
+		
+		$modal_title = get_the_title();
+		$modal_content = apply_filters('the_content', get_the_content());
+		
+		$this->render( $template, array(
+			'width' => $width,
+			'max_width' => $max_width,
+			'class' => $class,
+			'id' => $id,
+			'modal_title' => $modal_title,
+			'modal_content' => $modal_content,
+			'modal_footer' => $modal_footer,
+		) );
+
+		return $script_buff;
+	}
+
 	private function render( $template, $args ) {
 		extract( $args );
 		
