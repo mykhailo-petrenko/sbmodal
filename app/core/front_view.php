@@ -13,9 +13,18 @@ class SBModalFrontView {
 		# Load modals visible in global scope
 		$query_args = array(
 			'post_type' => 'sb_modals',
-			'meta_key' => 'sb_modals__load_condition',
-			'meta_value' => 'custom',
-			'meta_compare' => '!=',
+			'meta_query' => array(
+				'relation' => 'OR',
+				array(
+					'key' => 'sb_modals__load_condition',
+					'value' => 'custom',
+					'compare' => 'NOT LIKE',
+				),
+				array(
+					'key' => 'sb_modals__load_condition',
+					'compare' => 'NOT EXISTS',
+				),
+			),
 			'posts_per_page' => 0,
 			'nopaging' => true,
 		);

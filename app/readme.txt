@@ -3,7 +3,7 @@ Contributors: sevenbytes
 Tags: modal, bootstrap, pop ups, bootstrap popup
 Requires at least: 4.0.1
 Tested up to: 4.9.1
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 Plugin Name: SBModal
 Plugin URI: http://sbmodal.seven-bytes.com/
 Description: Ease usage of Bootstrap Modals in WordPress
@@ -71,6 +71,9 @@ You may use all features of standard WP WYSIWYG editor for creating Modal conten
 
 
 == Changelog ==
+= 1.4.1 =
+* Fixed issue: Modals don’t appear on version 1.4.0
+
 = 1.4.0 =
 * Add "Load Condition" to be able load modal`s code on selected posts/pages or for whole site
 * Update Bootstrap to version 3.3.7
